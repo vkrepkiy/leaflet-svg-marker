@@ -60,6 +60,10 @@ export default L.SvgPathMarker = L.Path.extend({
 
 L.Canvas.include({
   _updateSvgMarker: function (layer) {
+		if (!this._drawing || layer._empty()) {
+			return;
+		}
+
     var ctx     = this._ctx;
     var point   = layer._point;
     var center  = layer._size.divideBy(2).round();
