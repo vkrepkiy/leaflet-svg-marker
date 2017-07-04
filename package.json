@@ -1,0 +1,27 @@
+{
+  "name": "leaflet-svg-marker",
+  "version": "0.0.1",
+  "description": "SVG marker for Leaflet.js",
+  "main": "src/svg.marker.js",
+  "scripts": {
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/vkrepkiy/leaflet-svg-marker.git"
+  },
+  "keywords": [
+    "leaflet",
+    "marker",
+    "svg"
+  ],
+  "author": "Valentin Krepkiy <valkrepkiy@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vkrepkiy/leaflet-svg-marker/issues"
+  },
+  "homepage": "https://github.com/vkrepkiy/leaflet-svg-marker#readme",
+  "dependencies": {
+    "svgpath": "^2.2.1"
+  }
+}
