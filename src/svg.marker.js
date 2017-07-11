@@ -7,6 +7,7 @@ export default L.SvgPathMarker = L.Path.extend({
     fillOpacity: 1,
     lineCap: "round",
     lineJoin: "round",
+		strokeColor: "#000000",
     weight: 1
 	},
 
@@ -14,13 +15,14 @@ export default L.SvgPathMarker = L.Path.extend({
 		L.Util.setOptions(this, options);
 
     this._direction   = this.options.direction;
-    this._fillColor   = this.options.color;
-    this._fillOpacity = this.options.opacity;
+    this._fillColor   = this.options.fillColor;
+    this._fillOpacity = this.options.fillOpacity;
 		this._latlng      = L.latLng(latlng);
     this._lineCap     = this.options.lineCap;
     this._lineJoin    = this.options.lineJoin;
     this._pathString  = this.options.pathString;
     this._size        = L.point(this.options.size);
+		this._strokeColor = this.options.strokeColor;
     this._weight      = this.options.weight;
 	},
 	_containsPoint: function (p) {
@@ -80,6 +82,7 @@ L.Canvas.include({
     ctx.lineWidth   = layer._weight
 		ctx.lineCap     = layer._lineCap;
 		ctx.lineJoin    = layer._lineJoin;
+		ctx.strokeStyle = layer._strokeColor;
 
     ctx.fill(icon);
     ctx.stroke(icon);
