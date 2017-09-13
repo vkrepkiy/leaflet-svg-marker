@@ -2,28 +2,34 @@ import svgpath from "svgpath";
 
 export default L.SvgPathMarker = L.Path.extend({
 	options: {
-    direction: 0,
-    fillColor: "#EEE000",
-    fillOpacity: 1,
-    lineCap: "round",
-    lineJoin: "round",
-		strokeColor: "#000000",
-    weight: 1
+		direction   : 0,
+		fillColor   : "#EEE000",
+		fillOpacity : 1,
+		lineCap     : "round",
+		lineJoin    : "round",
+		strokeColor : "#000000",
+		scale       : true,
+		scaleBase   : 16,
+		scalePow    : 1.2,
+		weight      : 1
 	},
 
 	initialize: function (latlng, options) {
 		L.Util.setOptions(this, options);
 
-    this._direction   = this.options.direction;
-    this._fillColor   = this.options.fillColor;
-    this._fillOpacity = this.options.fillOpacity;
+		this._direction   = this.options.direction;
+		this._fillColor   = this.options.fillColor;
+		this._fillOpacity = this.options.fillOpacity;
 		this._latlng      = L.latLng(latlng);
-    this._lineCap     = this.options.lineCap;
-    this._lineJoin    = this.options.lineJoin;
-    this._pathString  = this.options.pathString;
-    this._size        = L.point(this.options.size);
+		this._lineCap     = this.options.lineCap;
+		this._lineJoin    = this.options.lineJoin;
+		this._pathString  = this.options.pathString;
+		this._size        = L.point(this.options.size);
 		this._strokeColor = this.options.strokeColor;
-    this._weight      = this.options.weight;
+		this._scale       = this.options.scale;
+		this._scaleBase   = this.options.scaleBase;
+		this._scalePow    = this.options.scalePow;
+		this._weight      = this.options.weight;
 	},
 	_containsPoint: function (p) {
 		return p.distanceTo(this._point) <= this._size.x + this._clickTolerance();
@@ -56,12 +62,19 @@ export default L.SvgPathMarker = L.Path.extend({
 		this._pxBounds = new L.Bounds(this._point.subtract(p), this._point.add(p));
 	},
 	_updatePath: function () {
-		this._renderer._updateSvgMarker(this);
+		let coeff = 1;
+
+		if (this._scale) {
+			let currentZoom = this._map.getZoom();
+			coeff = Math.pow(currentZoom / this._scaleBase, this._scalePow);
+		}
+
+		this._renderer._updateSvgMarker(this, coeff);
 	}
 });
 
 L.Canvas.include({
-  _updateSvgMarker: function (layer) {
+  _updateSvgMarker: function (layer, coeff) {
 		if (!this._drawing || layer._empty()) {
 			return;
 		}
@@ -69,9 +82,10 @@ L.Canvas.include({
     var ctx     = this._ctx;
     var point   = layer._point;
     var center  = layer._size.divideBy(2).round();
-    var path = svgpath(layer._pathString)
+		var path = svgpath(layer._pathString)
+			.scale(coeff)
       .rotate(layer._direction, center.x, center.y)
-      .translate(point.x, point.y)
+			.translate(point.x, point.y)
       .toString();
     var icon = new Path2D(path);
 

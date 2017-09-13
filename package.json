@@ -1,6 +1,6 @@
 {
   "name": "leaflet-svg-marker",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "SVG marker for Leaflet.js",
   "main": "src/svg.marker.js",
   "scripts": {
