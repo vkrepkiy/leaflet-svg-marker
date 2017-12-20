@@ -95,8 +95,6 @@ L.Canvas.include({
 
     var icon = new Path2D(path);
 
-    this._drawnLayers[layer._leaflet_id] = layer;
-
     ctx.globalAlpha = layer._fillOpacity;
     ctx.fillStyle   = layer._fillColor;
     ctx.lineWidth   = layer._weight
